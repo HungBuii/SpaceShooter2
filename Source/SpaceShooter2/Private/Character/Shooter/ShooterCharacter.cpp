@@ -17,6 +17,9 @@ void AShooterCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	{
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AShooterCharacter::Move);
+		
+		// Mouse Looking
+		EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &AShooterCharacter::Look);
 	}
 }
 
@@ -36,6 +39,17 @@ void AShooterCharacter::Move(const FInputActionValue& Value)
 	DoMove(MovementVector.X, MovementVector.Y);
 }
 
+void AShooterCharacter::Look(const FInputActionValue& Value)
+{
+	// input is a Vector2D
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	
+	UE_LOG(LogTemp, Display, TEXT("Look: %s"), *LookAxisVector.ToString());
+	
+	// route the input
+	DoLook(LookAxisVector.X, LookAxisVector.Y);
+}
+
 void AShooterCharacter::DoMove(float Right, float Forward)
 {
 	if (GetController() != nullptr)
@@ -53,5 +67,15 @@ void AShooterCharacter::DoMove(float Right, float Forward)
 		// add movement 
 		AddMovementInput(ForwardDirection, Forward);
 		AddMovementInput(RightDirection, Right);
+	}
+}
+
+void AShooterCharacter::DoLook(float Yaw, float Pitch)
+{
+	if (GetController() != nullptr)
+	{
+		// add yaw and pitch input to controller
+		AddControllerYawInput(Yaw);
+		AddControllerPitchInput(Pitch);
 	}
 }
