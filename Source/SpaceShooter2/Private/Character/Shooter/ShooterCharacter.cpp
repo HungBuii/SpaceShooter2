@@ -4,6 +4,7 @@
 #include "Character/Shooter/ShooterCharacter.h"
 
 #include "EnhancedInputComponent.h"
+#include "Gun/Gun.h"
 
 AShooterCharacter::AShooterCharacter()
 {
@@ -20,12 +21,25 @@ void AShooterCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		
 		// Mouse Looking
 		EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &AShooterCharacter::Look);
+		
+		// Shooting
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AShooterCharacter::Shoot);
+
 	}
 }
 
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GetMesh()->HideBoneByName("weapon_r", PBO_None);
+	
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	if (Gun)
+	{
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
+	}
+	
 }
 
 void AShooterCharacter::Move(const FInputActionValue& Value)
@@ -44,10 +58,18 @@ void AShooterCharacter::Look(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 	
-	UE_LOG(LogTemp, Display, TEXT("Look: %s"), *LookAxisVector.ToString());
+	// UE_LOG(LogTemp, Display, TEXT("Look: %s"), *LookAxisVector.ToString());
 	
 	// route the input
 	DoLook(LookAxisVector.X, LookAxisVector.Y);
+}
+
+void AShooterCharacter::Shoot(const FInputActionValue& Value)
+{
+	if (Gun)
+	{
+		Gun->PullTrigger();
+	}
 }
 
 void AShooterCharacter::DoMove(float Right, float Forward)
