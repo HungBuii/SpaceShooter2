@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ShooterPlayerController.generated.h"
 
+class UHUDWidget;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -39,4 +40,11 @@ protected:
 
 	/** Input mapping context setup */
 	virtual void SetupInputComponent() override;
+	
+public:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UHUDWidget> HUDWidgetClass;
+	
+	UPROPERTY(VisibleAnywhere)
+	UHUDWidget* HUDWidget;
 };

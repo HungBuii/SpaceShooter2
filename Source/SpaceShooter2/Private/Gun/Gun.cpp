@@ -4,6 +4,8 @@
 #include "Gun/Gun.h"
 
 #include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGun::AGun()
@@ -39,5 +41,30 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	MuzzleFlashParticleSystem->Activate();
+	
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShootSound, GetActorLocation(), GetActorRotation());
+	
+	if (OwnerController)
+	{
+		FVector ViewPointLocation;
+		FRotator ViewPointRotation;
+		
+		OwnerController->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
+		
+		FVector EndLocation = ViewPointLocation + ViewPointRotation.Vector() * MaxRange;
+		
+		FHitResult HitResult;
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+		Params.AddIgnoredActor(GetOwner());
+		
+		if (bool IsHit = GetWorld()->LineTraceSingleByChannel(HitResult, ViewPointLocation, EndLocation, ECC_GameTraceChannel1, Params))
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactParticleSystem, HitResult.ImpactPoint, HitResult.ImpactPoint.Rotation());
+		
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, HitResult.ImpactPoint);
+		}
+	}
+	
 }
 

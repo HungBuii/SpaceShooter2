@@ -37,7 +37,9 @@ void AShooterCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	if (Gun)
 	{
+		Gun->SetOwner(this);
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
+		Gun->OwnerController = GetController();
 	}
 	
 }

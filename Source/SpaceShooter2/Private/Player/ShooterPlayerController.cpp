@@ -5,6 +5,7 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
+#include "HUD/HUDWidget.h"
 #include "Widgets/Input/SVirtualJoystick.h"
 
 void AShooterPlayerController::BeginPlay()
@@ -21,8 +22,13 @@ void AShooterPlayerController::BeginPlay()
 		{
 			// add the controls to the player screen
 			MobileControlsWidget->AddToPlayerScreen(0);
-
 		}
+	}
+	
+	HUDWidget = CreateWidget<UHUDWidget>(this, HUDWidgetClass);
+	if (HUDWidget)
+	{
+		HUDWidget->AddToViewport();
 	}
 	
 }
