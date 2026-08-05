@@ -28,5 +28,10 @@ void UBTService_ShooterLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerCom
 			Blackboard->SetValueAsVector(GetSelectedBlackboardKey(), ShooterCharacter->GetActorLocation());
 			OwnerAIController->SetFocus(ShooterCharacter);
 		}
+		else
+		{
+			OwnerAIController->ClearFocus(EAIFocusPriority::Gameplay);
+			Blackboard->ClearValue(GetSelectedBlackboardKey());
+		}
 	}
 }
