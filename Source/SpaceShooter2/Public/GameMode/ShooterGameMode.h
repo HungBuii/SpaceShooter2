@@ -14,4 +14,9 @@ class SPACESHOOTER2_API AShooterGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AShooterGameMode();
+	
+protected:
+	virtual void BeginPlay() override;
 };

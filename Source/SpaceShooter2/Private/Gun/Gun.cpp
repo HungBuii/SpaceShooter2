@@ -64,6 +64,11 @@ void AGun::PullTrigger()
 		
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, HitResult.ImpactPoint);
 		}
+		
+		if (AActor* HitActor = HitResult.GetActor())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("HitActor: %s"), *HitActor->GetActorNameOrLabel());
+		}
 	}
 	
 }
