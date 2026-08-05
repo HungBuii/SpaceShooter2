@@ -3,6 +3,8 @@
 
 #include "AI/EnemyAIController.h"
 
+#include "Enemy/EnemyCharacter.h"
+
 void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -14,7 +16,18 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 	
 }
 
-void AEnemyAIController::StartBehaviorTree()
+void AEnemyAIController::StartBehaviorTree(AShooterCharacter* Player)
 {
-	RunBehaviorTree(EnemyAIBehaviorTree);
+	if (EnemyAIBehaviorTree)
+	{
+		EnemyCharacter = Cast<AEnemyCharacter>(GetPawn());
+		
+		if (Player)
+		{
+			ShooterCharacter = Player;
+		}
+		
+		RunBehaviorTree(EnemyAIBehaviorTree);
+	}
+	
 }

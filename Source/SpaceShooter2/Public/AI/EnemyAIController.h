@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "EnemyAIController.generated.h"
 
+class AShooterCharacter;
+class AEnemyCharacter;
 /**
  * 
  */
@@ -23,5 +25,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* EnemyAIBehaviorTree;
 	
-	void StartBehaviorTree();
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<AEnemyCharacter> EnemyCharacter;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<AShooterCharacter> ShooterCharacter;
+	
+	void StartBehaviorTree(AShooterCharacter* Player);
 };
