@@ -46,9 +46,6 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 	
-	/** Called for shoot input */
-	void Shoot(const FInputActionValue& Value);
-	
 public:
 	
 	/** Handles move inputs from either controls or UI interfaces */
@@ -57,10 +54,5 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoLook(float Yaw, float Pitch);
-	
-	/** Weapon */
-	UPROPERTY(EditAnywhere, Category="Gun")
-	TSubclassOf<AGun> GunClass;
-	TObjectPtr<AGun> Gun; 
 	
 };

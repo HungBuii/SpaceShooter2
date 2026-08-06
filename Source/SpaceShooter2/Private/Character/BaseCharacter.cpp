@@ -5,6 +5,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Gun/Gun.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -39,6 +40,24 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	GetMesh()->HideBoneByName("weapon_r", PBO_None);
+	
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	if (Gun)
+	{
+		Gun->SetOwner(this);
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
+		Gun->OwnerController = GetController();
+	}
+	
+}
+
+void ABaseCharacter::Shoot()
+{
+	if (Gun)
+	{
+		Gun->PullTrigger();
+	}
 }
 
 // Called every frame

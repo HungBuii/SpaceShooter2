@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+class AGun;
+
 UCLASS()
 class SPACESHOOTER2_API ABaseCharacter : public ACharacter
 {
@@ -25,5 +27,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	/** Called for shoot input */
+	void Shoot();
+	
+	/** Weapon */
+	UPROPERTY(EditAnywhere, Category="Gun")
+	TSubclassOf<AGun> GunClass;
+	TObjectPtr<AGun> Gun; 
+	
 };

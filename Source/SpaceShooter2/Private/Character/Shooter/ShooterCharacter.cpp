@@ -32,16 +32,6 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GetMesh()->HideBoneByName("weapon_r", PBO_None);
-	
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-	if (Gun)
-	{
-		Gun->SetOwner(this);
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
-		Gun->OwnerController = GetController();
-	}
-	
 }
 
 void AShooterCharacter::Move(const FInputActionValue& Value)
@@ -64,14 +54,6 @@ void AShooterCharacter::Look(const FInputActionValue& Value)
 	
 	// route the input
 	DoLook(LookAxisVector.X, LookAxisVector.Y);
-}
-
-void AShooterCharacter::Shoot(const FInputActionValue& Value)
-{
-	if (Gun)
-	{
-		Gun->PullTrigger();
-	}
 }
 
 void AShooterCharacter::DoMove(float Right, float Forward)
