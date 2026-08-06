@@ -3,6 +3,7 @@
 
 #include "AI/EnemyAIController.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Enemy/EnemyCharacter.h"
 
 void AEnemyAIController::BeginPlay()
@@ -28,6 +29,9 @@ void AEnemyAIController::StartBehaviorTree(AShooterCharacter* Player)
 		}
 		
 		RunBehaviorTree(EnemyAIBehaviorTree);
+		
+		GetBlackboardComponent()->SetValueAsVector("StartLocation", EnemyCharacter->GetActorLocation());
+		
 	}
 	
 }
